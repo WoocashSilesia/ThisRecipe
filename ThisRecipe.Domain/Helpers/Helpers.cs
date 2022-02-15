@@ -7,7 +7,8 @@
             Book,
             Website,
             SocialMedia,
-            Own
+            Own,
+            Other
         }
     }
 }

@@ -18,7 +18,7 @@ namespace ThisRecipe.App.Concrete
            
             AddItem(new MenuAction(3, "Show details", "Recipe"));
             AddItem(new MenuAction(4, "Edit", "Recipe"));
-            AddItem(new MenuAction(5, "Remove recipe", "Recipe"));
+            AddItem(new MenuAction(5, "Remove", "Recipe"));
         }
 
         public List<MenuAction> GetMenuActionsByMenuName(string menuName)

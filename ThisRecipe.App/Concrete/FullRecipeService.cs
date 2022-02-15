@@ -3,7 +3,7 @@ using ThisRecipe.Domain.Entity;
 
 namespace ThisRecipe.App.Concrete
 {
-    public class RecipeService : BaseService<Recipe>
+    public class FullRecipeService : BaseService<FullRecipe>
     {
     }
 }

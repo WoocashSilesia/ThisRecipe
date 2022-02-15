@@ -8,10 +8,11 @@ namespace ThisRecipe.Domain.Entity
         public string Title { get; set; }
         public string Description { get; set; }
 
-        public Step(int order, string title)
+        public Step(int order, string title, string description)
         {
             Order = order;
             Title = title;
+            Description = description;
         }
     }
 }

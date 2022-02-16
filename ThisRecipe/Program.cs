@@ -1,4 +1,7 @@
 ﻿using System;
+using ThisRecipe.App.Concrete;
+using ThisRecipe.App.Extensions;
+using ThisRecipe.App.Managers;
 
 namespace ThisRecipe
 {
@@ -7,7 +10,9 @@ namespace ThisRecipe
         static void Main(string[] args)
         {
             MenuActionService menuActonService = new MenuActionService();
-            RecipeManager bookManager = new RecipeManager();
+            IngredientManager ingredientManager = new IngredientManager();
+            SingleRecipeManager singleRecipeManager = new SingleRecipeManager(ingredientManager);
+            RecipeManager bookManager = new RecipeManager(singleRecipeManager);
 
             var mainMenu = menuActonService.GetMenuActionsByMenuName("Main");
             bool endLoop = false;
@@ -16,14 +21,17 @@ namespace ThisRecipe
             while (!endLoop)
             {
                 Console.WriteLine("Please let me know what do you want to do:");
-                foreach (var menu in mainMenu)
+                foreach ((var menu, int index) in mainMenu.WithIndex())
                 {
                     Console.WriteLine($"{menu.Id}: {menu.Name}");
+                    if(index + 1 == mainMenu.Count)
+                    {
+                        Console.WriteLine();
+                    }
                 }
-                Console.WriteLine();
+                Console.Write("Option: ");
                 var selectedOperation = Console.ReadKey();
-
-                Console.WriteLine("\n");
+           
                 switch (selectedOperation.KeyChar)
                 {
                     case '1':

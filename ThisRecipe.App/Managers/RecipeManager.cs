@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ThisRecipe.App.Concrete;
-using ThisRecipe.App.Extensions;
 using ThisRecipe.Domain.Entity;
-using static ThisRecipe.Domain.Helpers.Helpers;
 
 namespace ThisRecipe.App.Managers
 {
@@ -64,9 +62,10 @@ namespace ThisRecipe.App.Managers
             bool manageThings = true;
             List<string> thingsToPrepare = new List<string>();
 
+            Console.WriteLine("Please insert all kitchen stuff");
             while (manageThings)
             {
-                Console.WriteLine("Add name of kitchen stuff:");
+                Console.WriteLine("\nAdd name of kitchen stuff:");
                 thingsToPrepare.Add(Console.ReadLine());
 
                 Console.WriteLine("Kitchen stuff added!\nDo you want add another stuff??\tY/N");
@@ -85,7 +84,7 @@ namespace ThisRecipe.App.Managers
         {
             bool manageSteps = true;
             List<Step> steps = new List<Step>();
-
+            Console.WriteLine("\nPlease insert steps in recipe");
             while (manageSteps)
             {
                 Console.WriteLine("Add title");
@@ -99,7 +98,7 @@ namespace ThisRecipe.App.Managers
                 Console.WriteLine($"Step {steps.Last().Title} added!\nDo you want add another step??\tY/N");
                 var key = Console.ReadKey();
 
-                if (Char.ToLower(key.KeyChar) != 'n')
+                if (Char.ToLower(key.KeyChar) != 'y')
                 {
                     manageSteps = false;
                 }
@@ -114,7 +113,7 @@ namespace ThisRecipe.App.Managers
             short numberOfServings = 0;
             while (!correct)
             {
-                Console.WriteLine("Please set number of servings: ");
+                Console.WriteLine("\nPlease set number of servings: ");
                 correct = short.TryParse(Console.ReadLine(), out numberOfServings);
                 if (correct && numberOfServings > 0)
                 {
@@ -131,7 +130,7 @@ namespace ThisRecipe.App.Managers
             while (!correct)
             {
                 Console.WriteLine("Please set preparation time in minutes: ");
-                short.TryParse(Console.ReadLine(), out result);
+                correct = short.TryParse(Console.ReadLine(), out result);
                 if (correct && result > 0)
                 {
                     return result;
@@ -150,7 +149,7 @@ namespace ThisRecipe.App.Managers
                 //Pobierz przepis jak już istnieje
                 Console.WriteLine("Choose an option:\n1)Add new recipe\n2)Add recipe from list");
                 bool isParsed = int.TryParse(Console.ReadLine(), out int addOption);
-                while (!isParsed || (addOption != 1 || addOption != 2))
+                while (!isParsed || addOption < 1  || addOption > 2)
                 {
                     Console.WriteLine("Wrong number, try again");
                     isParsed = int.TryParse(Console.ReadLine(), out addOption);
@@ -187,11 +186,10 @@ namespace ThisRecipe.App.Managers
 
         public int AddNewRecipe()
         {
-            Console.WriteLine("Please complete all fields.");
+            Console.WriteLine("\n\nPlease complete all fields.");
             var title = SetTitle();
             var author = SetAuthor();
             var description = SetDescription();
-            var recipeSource = SetSourceOfRecipe();
             var kitchenStuff = AddKitchenStuff();
             var steps = AddSteps();
             var preparationDifficulty = AddPreparationDifficulty();
@@ -215,117 +213,117 @@ namespace ThisRecipe.App.Managers
             return _fullRecipeService.AddItem(fullRecpie);
         }
 
-        public int UpdateRecipe(int id)
-        {
-            var recipeToUpdate = _fullRecipeService.Items.SingleOrDefault(x => x.Id == id);
-            if (recipeToUpdate == null)
-            {
-                return 0;
-            }
-            else
-            {
-                Console.WriteLine("What do You want to update?");
-                Console.WriteLine($"1) Author");
-                Console.WriteLine($"2) Title");
-                Console.WriteLine($"3) Source");
-                Console.WriteLine($"4) Decription");
-                Console.WriteLine($"5) Ingrediens");
-                Console.WriteLine($"6) Difficulty");
+        //public int UpdateRecipe(int id)
+        //{
+        //    var recipeToUpdate = _fullRecipeService.Items.SingleOrDefault(x => x.Id == id);
+        //    if (recipeToUpdate == null)
+        //    {
+        //        return 0;
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("What do You want to update?");
+        //        Console.WriteLine($"1) Author");
+        //        Console.WriteLine($"2) Title");
+        //        Console.WriteLine($"3) Source");
+        //        Console.WriteLine($"4) Decription");
+        //        Console.WriteLine($"5) Ingrediens");
+        //        Console.WriteLine($"6) Difficulty");
 
-                int.TryParse(Console.ReadLine(), out int number);
+        //        int.TryParse(Console.ReadLine(), out int number);
 
-                switch (number)
-                {
-                    case 1:
-                        Console.WriteLine("Plase write author");
-                        recipeToUpdate.Author = Console.ReadLine();
-                        break;
-                    case 2:
-                        Console.WriteLine("Plase write title");
-                        recipeToUpdate.Title = Console.ReadLine();
-                        break;
-                    case 3:
-                        Console.WriteLine("Plase write source");
-                        ShowRecipeSource();
-                        Enum.TryParse(Console.ReadLine(), out RecipeSource recupeSourceType);
-                        recipeToUpdate.RecipeSource = recupeSourceType;
-                        break;
-                    case 4:
-                        Console.WriteLine("Plase write description");
-                        recipeToUpdate.Title = Console.ReadLine();
-                        break;
-                    case 5:
-                        recipeToUpdate.Recpies = UpdateIngredients();
-                        break;
-                    case 6:
-                        Console.WriteLine("Plase write difficulty");
-                        short.TryParse(Console.ReadLine(), out short difficulty);
-                        recipeToUpdate.PreparationDifficulty = difficulty;
-                        break;
-                    default:
-                        break;
-                }
+        //        switch (number)
+        //        {
+        //            case 1:
+        //                Console.WriteLine("Plase write author");
+        //                recipeToUpdate.Author = Console.ReadLine();
+        //                break;
+        //            case 2:
+        //                Console.WriteLine("Plase write title");
+        //                recipeToUpdate.Title = Console.ReadLine();
+        //                break;
+        //            case 3:
+        //                Console.WriteLine("Plase write source");
+        //                ShowRecipeSource();
+        //                Enum.TryParse(Console.ReadLine(), out RecipeSource recupeSourceType);
+        //                recipeToUpdate.RecipeSource = recupeSourceType;
+        //                break;
+        //            case 4:
+        //                Console.WriteLine("Plase write description");
+        //                recipeToUpdate.Title = Console.ReadLine();
+        //                break;
+        //            case 5:
+        //                recipeToUpdate.Recpies = UpdateIngredients();
+        //                break;
+        //            case 6:
+        //                Console.WriteLine("Plase write difficulty");
+        //                short.TryParse(Console.ReadLine(), out short difficulty);
+        //                recipeToUpdate.PreparationDifficulty = difficulty;
+        //                break;
+        //            default:
+        //                break;
+        //        }
 
-                return _fullRecipeService.UpdateItem(recipeToUpdate);
-            }
-        }
+        //        return _fullRecipeService.UpdateItem(recipeToUpdate);
+        //    }
+        //}
 
-        private List<string> UpdateIngredients(List<string> currentIngredients = null)
-        {
-            List<string> ingrediens = currentIngredients ?? new List<string>();
-            if (currentIngredients.Count > 0)
-            {
-                Console.WriteLine("Ingredients:");
-                foreach (var (el, index) in ingrediens.WithIndex())
-                {
-                    Console.Write($"{index + 1}) {el}");
-                }
-            }
-            Console.Write("Type 'a' to add ingredient\nType 'u' to update ingredient.\nType 'b' to finish.\nType 's' to show ingredients.\nType 'r' to remove element from list. ");
+        //private List<string> UpdateIngredients(List<string> currentIngredients = null)
+        //{
+        //    List<string> ingrediens = currentIngredients ?? new List<string>();
+        //    if (currentIngredients.Count > 0)
+        //    {
+        //        Console.WriteLine("Ingredients:");
+        //        foreach (var (el, index) in ingrediens.WithIndex())
+        //        {
+        //            Console.Write($"{index + 1}) {el}");
+        //        }
+        //    }
+        //    Console.Write("Type 'a' to add ingredient\nType 'u' to update ingredient.\nType 'b' to finish.\nType 's' to show ingredients.\nType 'r' to remove element from list. ");
 
 
-            while (true)
-            {
-                var selctedChoice = Console.ReadKey();
-                if (selctedChoice.KeyChar == 'b')
-                {
-                    break;
-                }
-                else if (selctedChoice.KeyChar == 's' || selctedChoice.KeyChar == 'r' || selctedChoice.KeyChar == 'u')
-                {
-                    foreach (var (el, index) in ingrediens.WithIndex())
-                    {
-                        Console.Write($"{index + 1}) {el}");
-                    }
+        //    while (true)
+        //    {
+        //        var selctedChoice = Console.ReadKey();
+        //        if (selctedChoice.KeyChar == 'b')
+        //        {
+        //            break;
+        //        }
+        //        else if (selctedChoice.KeyChar == 's' || selctedChoice.KeyChar == 'r' || selctedChoice.KeyChar == 'u')
+        //        {
+        //            foreach (var (el, index) in ingrediens.WithIndex())
+        //            {
+        //                Console.Write($"{index + 1}) {el}");
+        //            }
 
-                    if (selctedChoice.KeyChar == 'r')
-                    {
-                        Console.WriteLine("Select number of ingredient to remove");
-                        int.TryParse(Console.ReadLine(), out int ingredientIndex);
-                        ingrediens.RemoveAt(ingredientIndex - 1);
-                    }
-                    else if (selctedChoice.KeyChar == 'u')
-                    {
-                        Console.WriteLine("Select number of ingredient to update");
-                        int.TryParse(Console.ReadLine(), out int ingredientIndex);
-                        Console.WriteLine("Write name of updated ingredient");
-                        ingrediens[ingredientIndex - 1] = Console.ReadLine();
-                    }
-                }
-                else if (selctedChoice.KeyChar == 'a')
-                {
-                    Console.WriteLine("Enter the ingredient:");
-                    var ingredient = Console.ReadLine();
-                    ingrediens.Add(ingredient);
-                }
-                else
-                {
-                    Console.WriteLine("unnown command.");
-                }
-            }
+        //            if (selctedChoice.KeyChar == 'r')
+        //            {
+        //                Console.WriteLine("Select number of ingredient to remove");
+        //                int.TryParse(Console.ReadLine(), out int ingredientIndex);
+        //                ingrediens.RemoveAt(ingredientIndex - 1);
+        //            }
+        //            else if (selctedChoice.KeyChar == 'u')
+        //            {
+        //                Console.WriteLine("Select number of ingredient to update");
+        //                int.TryParse(Console.ReadLine(), out int ingredientIndex);
+        //                Console.WriteLine("Write name of updated ingredient");
+        //                ingrediens[ingredientIndex - 1] = Console.ReadLine();
+        //            }
+        //        }
+        //        else if (selctedChoice.KeyChar == 'a')
+        //        {
+        //            Console.WriteLine("Enter the ingredient:");
+        //            var ingredient = Console.ReadLine();
+        //            ingrediens.Add(ingredient);
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("unnown command.");
+        //        }
+        //    }
 
-            return ingrediens;
-        }
+        //    return ingrediens;
+        //}
 
         public void RemoveRecipe()
         {

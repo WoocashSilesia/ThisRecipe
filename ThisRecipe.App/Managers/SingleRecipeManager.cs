@@ -94,7 +94,7 @@ namespace ThisRecipe.App.Managers
         private RecipeSource SetSourceOfRecipe()
         {
             bool isCorrect;
-            Console.Write("Please select number of one source of recipe from list: ");
+            Console.Write("Please select number of one source of recipe from list: \n");
             ShowRecipeSource();
             isCorrect = Enum.TryParse(Console.ReadLine(), out RecipeSource RecipeSource);
             while (!isCorrect)

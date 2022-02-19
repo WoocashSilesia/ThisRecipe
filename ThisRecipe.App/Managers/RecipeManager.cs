@@ -65,15 +65,16 @@ namespace ThisRecipe.App.Managers
             Console.WriteLine("Please insert all kitchen stuff");
             while (manageThings)
             {
-                Console.WriteLine("\nAdd name of kitchen stuff:");
+                Console.Write("\nAdd name of kitchen stuff:");
                 thingsToPrepare.Add(Console.ReadLine());
 
-                Console.WriteLine("Kitchen stuff added!\nDo you want add another stuff??\tY/N");
+                Console.WriteLine("Kitchen stuff added!\n\nDo you want add another stuff??\tY/N");
                 var key = Console.ReadKey();
 
                 if (Char.ToLower(key.KeyChar) != 'y')
                 {
                     manageThings = false;
+                    Console.WriteLine();
                 }
             }
 
@@ -84,23 +85,24 @@ namespace ThisRecipe.App.Managers
         {
             bool manageSteps = true;
             List<Step> steps = new List<Step>();
-            Console.WriteLine("\nPlease insert steps in recipe");
+            Console.WriteLine("Please insert steps in recipe");
             while (manageSteps)
             {
-                Console.WriteLine("Add title");
+                Console.Write("Add title:");
                 var title = Console.ReadLine();
 
-                Console.WriteLine("Add description");
+                Console.Write("Add description:");
                 var description = Console.ReadLine();
 
                 steps.Add(new Step(steps.Count() + 1, title, description));
 
-                Console.WriteLine($"Step {steps.Last().Title} added!\nDo you want add another step??\tY/N");
+                Console.WriteLine($"Step {steps.Last().Title} added!\n\nDo you want add another step??\tY/N");
                 var key = Console.ReadKey();
 
                 if (Char.ToLower(key.KeyChar) != 'y')
                 {
                     manageSteps = false;
+                    Console.WriteLine();
                 }
             }
 
@@ -113,7 +115,7 @@ namespace ThisRecipe.App.Managers
             short numberOfServings = 0;
             while (!correct)
             {
-                Console.WriteLine("\nPlease set number of servings: ");
+                Console.Write("Please set number of servings: ");
                 correct = short.TryParse(Console.ReadLine(), out numberOfServings);
                 if (correct && numberOfServings > 0)
                 {
@@ -129,7 +131,7 @@ namespace ThisRecipe.App.Managers
             short result = 0;
             while (!correct)
             {
-                Console.WriteLine("Please set preparation time in minutes: ");
+                Console.Write("Please set preparation time in minutes: ");
                 correct = short.TryParse(Console.ReadLine(), out result);
                 if (correct && result > 0)
                 {
@@ -148,6 +150,7 @@ namespace ThisRecipe.App.Managers
             {
                 //Pobierz przepis jak już istnieje
                 Console.WriteLine("Choose an option:\n1)Add new recipe\n2)Add recipe from list");
+
                 bool isParsed = int.TryParse(Console.ReadLine(), out int addOption);
                 while (!isParsed || addOption < 1  || addOption > 2)
                 {
@@ -161,7 +164,7 @@ namespace ThisRecipe.App.Managers
                         recipes.Add(_singleRecipeManager.CreateSingleRecipe());
                         break;
                     case 2:
-                        recipes.Add(_singleRecipeManager.AddExistedSingleRecipe());
+                        recipes.Add(_singleRecipeManager.AddExistedSingleRecipe(recipes));
                         break;
                 }
 
@@ -186,15 +189,25 @@ namespace ThisRecipe.App.Managers
 
         public int AddNewRecipe()
         {
-            Console.WriteLine("\n\nPlease complete all fields.");
+            Console.WriteLine("\n-----Adding a recipe-----");
+            Console.WriteLine("Please complete all fields.\n");
+            Console.WriteLine("-----TITLE-----");
             var title = SetTitle();
+            Console.WriteLine("-----AUTHOR-----");
             var author = SetAuthor();
+            Console.WriteLine("-----DESCRIPTION-----");
             var description = SetDescription();
+            Console.WriteLine("-----KITCHEN STUFF-----");
             var kitchenStuff = AddKitchenStuff();
+            Console.WriteLine("-----STEPS-----");
             var steps = AddSteps();
+            Console.WriteLine("-----PREPARATION DIFFICULTY-----");
             var preparationDifficulty = AddPreparationDifficulty();
+            Console.WriteLine("-----NUMBER OF SERVINGS-----");
             var numberOfServings = AddNumberOfServings();
+            Console.WriteLine("-----PREPARATION TIME-----");
             var preparationTime = AddPreparationTime();
+            Console.WriteLine("-----RECIPES-----");
             var singleRecipes = AddRecipes();
 
             var fullRecpie = new FullRecipe(

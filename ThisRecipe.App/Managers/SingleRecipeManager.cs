@@ -20,8 +20,11 @@ namespace ThisRecipe.App.Managers
 
         public SingleRecipe CreateSingleRecipe()
         {
+            Console.WriteLine("\n-----RECIPE NAME-----");
             var name = SetName();
+            Console.WriteLine("\n-----RECIPE SOURCE-----");
             var recipeSource = SetSourceOfRecipe();
+            Console.WriteLine("\n-----RECIPE INGREDIENTS-----");
             var ingredients = SetIngredients();
             var singleRecipe = new SingleRecipe(
                 _singleRecipeService.GetLastId(),
@@ -31,7 +34,7 @@ namespace ThisRecipe.App.Managers
             return singleRecipe;
         }
 
-        public SingleRecipe AddExistedSingleRecipe()
+        public SingleRecipe AddExistedSingleRecipe(List<SingleRecipe>  currentRecipes)
         {
             var recipes = _singleRecipeService.GetAllItems();
             bool isOk = false;
@@ -39,9 +42,9 @@ namespace ThisRecipe.App.Managers
             while (!isOk)
             {
                 Console.WriteLine("Select recipe to add");
-                foreach (var (recipe, index) in recipes.WithIndex())
+                foreach (var (recipe, index) in recipes.Where(r => !currentRecipes.Any(xr => xr.Id == r.Id)).WithIndex())
                 {
-                    Console.WriteLine($"{index + 1}) {recipe}");
+                    Console.WriteLine($"{index + 1}) {recipe.Name}");
                 }
                 isOk = int.TryParse(Console.ReadLine(), out int recipeNumber);
                 if (recipes.ElementAtOrDefault(recipeNumber - 1) != null)

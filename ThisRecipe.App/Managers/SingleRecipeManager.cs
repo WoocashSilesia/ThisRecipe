@@ -60,6 +60,35 @@ namespace ThisRecipe.App.Managers
             return null;
         }
 
+        public SingleRecipe GetRecipeFromList()
+        {
+            var recipes = _singleRecipeService.GetAllItems();
+            bool isOk = false;
+
+            while (!isOk)
+            {
+                Console.WriteLine("Select recipe to edit");
+                foreach (var (recipe, index) in recipes.WithIndex())
+                {
+                    Console.WriteLine($"{index + 1}) {recipe.Name}");
+                }
+
+                isOk = int.TryParse(Console.ReadLine(), out int recipeNumber);
+
+                if (recipes.ElementAtOrDefault(recipeNumber - 1) != null)
+                {
+                    return recipes.ElementAt(recipeNumber - 1);
+                }
+                else
+                {
+                    Console.WriteLine("Something goes wrong. Choose again.");
+                    isOk = false;
+                }
+            }
+
+            return null;
+        }
+
         private List<Ingredient> SetIngredients()
         {
             List<Ingredient> ingredients = new List<Ingredient>();

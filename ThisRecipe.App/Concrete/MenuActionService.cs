@@ -13,12 +13,10 @@ namespace ThisRecipe.App.Concrete
 
         private void Initialize()
         {
-            AddItem(new MenuAction(1, "Add recipe", "Main"));
-            AddItem(new MenuAction(2, "List of recipes", "Main"));
-           
-            AddItem(new MenuAction(3, "Show details", "Recipe"));
-            AddItem(new MenuAction(4, "Edit", "Recipe"));
-            AddItem(new MenuAction(5, "Remove", "Recipe"));
+            AddItem(new MenuAction(1, "Add a recipe", "Main"));
+            AddItem(new MenuAction(2, "Edit a recipe", "Main"));
+            AddItem(new MenuAction(3, "Delete a recipe", "Main"));
+            AddItem(new MenuAction(4, "Show list of recipes", "Main"));
         }
 
         public List<MenuAction> GetMenuActionsByMenuName(string menuName)

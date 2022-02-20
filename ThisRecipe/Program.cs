@@ -12,7 +12,7 @@ namespace ThisRecipe
             MenuActionService menuActonService = new MenuActionService();
             IngredientManager ingredientManager = new IngredientManager();
             SingleRecipeManager singleRecipeManager = new SingleRecipeManager(ingredientManager);
-            RecipeManager bookManager = new RecipeManager(singleRecipeManager);
+            RecipeManager recipeManager = new RecipeManager(singleRecipeManager);
 
             var mainMenu = menuActonService.GetMenuActionsByMenuName("Main");
             bool endLoop = false;
@@ -35,16 +35,16 @@ namespace ThisRecipe
                 switch (selectedOperation.KeyChar)
                 {
                     case '1':
-                        var newId = bookManager.AddNewRecipe();
+                        var newId = recipeManager.AddNewRecipe();
                         break;
                     case '2':
-                        Console.WriteLine("Not done yet");
+                        var id = recipeManager.EditRecipe();
                         break;
                     case '3':
                         Console.WriteLine("Not done yet");
                         break;
                     case '4':
-                        Console.WriteLine("Not done yet");
+                        recipeManager.ShowAllRecipes();
                         break;
                     default:
                         Console.WriteLine("Bad Action. Does not exist");
